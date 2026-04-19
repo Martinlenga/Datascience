@@ -114,11 +114,10 @@ GROUP BY o.officeCode
 # =========================
 df_under_20 = pd.read_sql("""
 WITH low_products AS (
-    SELECT od.productCode
-    FROM orderdetails od
-    JOIN orders o ON od.orderNumber = o.orderNumber
-    GROUP BY od.productCode
-    HAVING COUNT(DISTINCT o.customerNumber) < 20
+    SELECT productCode
+    FROM orderdetails
+    GROUP BY productCode
+    HAVING COUNT(DISTINCT orderNumber) < 20
 )
 
 SELECT DISTINCT
@@ -128,11 +127,16 @@ SELECT DISTINCT
     o.city,
     o.officeCode
 FROM employees e
-JOIN offices o ON e.officeCode = o.officeCode
-JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
-JOIN orders ord ON c.customerNumber = ord.customerNumber
-JOIN orderdetails od ON ord.orderNumber = od.orderNumber
+JOIN offices o 
+    ON e.officeCode = o.officeCode
+JOIN customers c 
+    ON e.employeeNumber = c.salesRepEmployeeNumber
+JOIN orders ord 
+    ON c.customerNumber = ord.customerNumber
+JOIN orderdetails od 
+    ON ord.orderNumber = od.orderNumber
 WHERE od.productCode IN (SELECT productCode FROM low_products)
+ORDER BY e.employeeNumber
 """, conn)
 
 # Close connection
