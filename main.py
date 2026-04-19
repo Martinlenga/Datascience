@@ -1,16 +1,20 @@
 import sqlite3
 import pandas as pd
 
+# Connect to database
 conn = sqlite3.connect('data.sqlite')
 
 # =========================
-# Step 1
+# Step 1 (FIXED)
 # =========================
 df_boston = pd.read_sql("""
-SELECT e.firstName, e.lastName, e.jobTitle
-FROM employees e
-JOIN offices o ON e.officeCode = o.officeCode
-WHERE o.city = 'Boston'
+SELECT firstName, lastName
+FROM employees
+WHERE officeCode IN (
+    SELECT officeCode
+    FROM offices
+    WHERE city = 'Boston'
+)
 """, conn)
 
 # =========================
@@ -62,7 +66,7 @@ SELECT e.employeeNumber, e.firstName, e.lastName,
        COUNT(c.customerNumber) AS num_customers
 FROM employees e
 JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
-GROUP BY e.employeeNumber
+GROUP BY e.employeeNumber, e.firstName, e.lastName
 HAVING AVG(c.creditLimit) > 90000
 ORDER BY num_customers DESC
 """, conn)
@@ -98,7 +102,7 @@ ORDER BY numpurchasers DESC
 # =========================
 df_customers = pd.read_sql("""
 SELECT o.officeCode, o.city,
-       COUNT(DISTINCT c.customerNumber) AS n_customers
+       COUNT(c.customerNumber) AS n_customers
 FROM offices o
 LEFT JOIN employees e ON o.officeCode = e.officeCode
 LEFT JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
@@ -106,7 +110,7 @@ GROUP BY o.officeCode
 """, conn)
 
 # =========================
-# Step 10 (🔥 FIXED SUBQUERY — THIS IS THE IMPORTANT ONE)
+# Step 10 
 # =========================
 df_under_20 = pd.read_sql("""
 WITH low_products AS (
@@ -131,4 +135,5 @@ JOIN orderdetails od ON ord.orderNumber = od.orderNumber
 WHERE od.productCode IN (SELECT productCode FROM low_products)
 """, conn)
 
+# Close connection
 conn.close()
