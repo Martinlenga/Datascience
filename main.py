@@ -129,6 +129,8 @@ JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
 JOIN orders ord ON c.customerNumber = ord.customerNumber
 JOIN orderdetails od ON ord.orderNumber = od.orderNumber
 WHERE od.productCode IN (SELECT productCode FROM low_products)
+GROUP BY e.employeeNumber
+ORDER BY e.employeeNumber
 """, conn)
 
 # Close connection
