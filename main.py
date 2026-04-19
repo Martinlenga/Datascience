@@ -121,15 +121,20 @@ WITH low_products AS (
     HAVING COUNT(DISTINCT o.customerNumber) < 20
 )
 
-SELECT DISTINCT e.employeeNumber, e.firstName, e.lastName,
-       o.city, o.officeCode
+SELECT DISTINCT e.employeeNumber,
+       e.firstName,
+       e.lastName,
+       o.city,
+       o.officeCode
 FROM employees e
 JOIN offices o ON e.officeCode = o.officeCode
 JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
 JOIN orders ord ON c.customerNumber = ord.customerNumber
-JOIN orderdetails od ON ord.orderNumber = od.orderNumber
-WHERE od.productCode IN (SELECT productCode FROM low_products)
-GROUP BY e.employeeNumber
+WHERE ord.orderNumber IN (
+    SELECT orderNumber
+    FROM orderdetails
+    WHERE productCode IN (SELECT productCode FROM low_products)
+)
 ORDER BY e.employeeNumber
 """, conn)
 
