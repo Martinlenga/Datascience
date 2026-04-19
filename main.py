@@ -1,20 +1,16 @@
 import sqlite3
 import pandas as pd
 
-# Connect to database
 conn = sqlite3.connect('data.sqlite')
 
 # =========================
-# Step 1 (FIXED)
+# Step 1
 # =========================
 df_boston = pd.read_sql("""
-SELECT firstName, lastName
-FROM employees
-WHERE officeCode IN (
-    SELECT officeCode
-    FROM offices
-    WHERE city = 'Boston'
-)
+SELECT e.firstName, e.lastName, e.jobTitle
+FROM employees e
+JOIN offices o ON e.officeCode = o.officeCode
+WHERE o.city = 'Boston'
 """, conn)
 
 # =========================
@@ -102,7 +98,7 @@ ORDER BY numpurchasers DESC
 # =========================
 df_customers = pd.read_sql("""
 SELECT o.officeCode, o.city,
-       COUNT(c.customerNumber) AS n_customers
+       COUNT(DISTINCT c.customerNumber) AS n_customers
 FROM offices o
 LEFT JOIN employees e ON o.officeCode = e.officeCode
 LEFT JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
@@ -110,7 +106,7 @@ GROUP BY o.officeCode
 """, conn)
 
 # =========================
-# Step 10 (FIXED - ROOT CAUSE OF "Gerard vs Loui")
+# Step 10 (🔥 FIXED SUBQUERY — THIS IS THE IMPORTANT ONE)
 # =========================
 df_under_20 = pd.read_sql("""
 WITH low_products AS (
@@ -121,22 +117,18 @@ WITH low_products AS (
     HAVING COUNT(DISTINCT o.customerNumber) < 20
 )
 
-SELECT DISTINCT e.employeeNumber,
-       e.firstName,
-       e.lastName,
-       o.city,
-       o.officeCode
+SELECT DISTINCT
+    e.employeeNumber,
+    e.firstName,
+    e.lastName,
+    o.city,
+    o.officeCode
 FROM employees e
 JOIN offices o ON e.officeCode = o.officeCode
 JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
 JOIN orders ord ON c.customerNumber = ord.customerNumber
-WHERE ord.orderNumber IN (
-    SELECT orderNumber
-    FROM orderdetails
-    WHERE productCode IN (SELECT productCode FROM low_products)
-)
-ORDER BY e.employeeNumber
+JOIN orderdetails od ON ord.orderNumber = od.orderNumber
+WHERE od.productCode IN (SELECT productCode FROM low_products)
 """, conn)
 
-# Close connection
 conn.close()
