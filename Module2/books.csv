@@ -1,0 +1,16 @@
+book_id,title,author_id,genre,price,stock,published_year
+1,Things Fall Apart,1,Literary Fiction,12.99,45,1958
+2,Arrow of God,1,Literary Fiction,11.99,30,1964
+3,A Grain of Wheat,2,Historical Fiction,13.99,20,1967
+4,Petals of Blood,2,Political Fiction,14.99,15,1977
+5,Purple Hibiscus,3,Literary Fiction,13.5,60,2003
+6,Half of a Yellow Sun,3,Historical Fiction,14.5,55,2006
+7,Americanah,3,Contemporary Fiction,15.99,40,2013
+8,Death and the King's Horseman,4,Drama,10.99,25,1975
+9,Our Sister Killjoy,5,Literary Fiction,11.5,18,1977
+10,Second Class Citizen,6,Literary Fiction,12.5,22,1974
+11,African Psycho,7,Thriller,13.0,35,2003
+12,We Need New Names,8,Literary Fiction,14.0,28,2013
+13,Open City,9,Literary Fiction,13.5,33,2011
+14,The River Between,2,Literary Fiction,10.99,12,1965
+15,Weep Not Child,2,Literary Fiction,10.5,10,1964

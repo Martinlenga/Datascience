@@ -1,0 +1,8 @@
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Archives / large files
+*.zip
+*.rar

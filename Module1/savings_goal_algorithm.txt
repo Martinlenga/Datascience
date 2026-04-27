@@ -1,0 +1,67 @@
+NAME: MARTIN LENGA MWAPAHE
+TITLE: Savings Goal Tracking System Algorithm
+
+--- PSEUDOCODE ---
+START
+
+FUNCTION setSavingsGoal(userId, targetAmount, targetDate)
+    CREATE savingsGoal
+    savingsGoal.userId = userId
+    savingsGoal.targetAmount = targetAmount
+    savingsGoal.targetDate = targetDate
+    savingsGoal.amountSaved = 0
+
+    STORE savingsGoal in database
+
+    RETURN savingsGoalId
+END FUNCTION
+
+
+FUNCTION updateSavingsProgress(userId, savingsGoalId, amountSaved)
+    RETRIEVE savingsGoal FROM database USING savingsGoalId
+
+    savingsGoal.amountSaved = savingsGoal.amountSaved + amountSaved
+
+    CALCULATE progressPercentage = 
+        (savingsGoal.amountSaved / savingsGoal.targetAmount) * 100
+
+    UPDATE savingsGoal in database
+
+    RETURN progressPercentage
+END FUNCTION
+
+
+FUNCTION getSavingsGoalStatus(userId, savingsGoalId)
+    RETRIEVE savingsGoal FROM database USING savingsGoalId
+
+    IF savingsGoal.amountSaved >= savingsGoal.targetAmount THEN
+        status = "Goal Achieved"
+    ELSE
+        status = "In Progress"
+    ENDIF
+
+    RETURN status
+END FUNCTION
+
+
+FUNCTION sendSavingsGoalNotification(userId, savingsGoalId)
+    RETRIEVE savingsGoal FROM database USING savingsGoalId
+
+    IF currentDate is close to savingsGoal.targetDate 
+        AND savingsGoal.amountSaved < savingsGoal.targetAmount THEN
+
+        COMPOSE message = "Reminder: Your savings goal deadline is approaching."
+
+        SEND message to user
+    ENDIF
+END FUNCTION
+
+END
+
+
+--- EXPLANATION ---
+- To solve this problem, I followed the Software Development Life Cycle (SDLC). 
+- First, I identified the key functionalities: setting a savings goal, updating progress, checking goal status and sending notifications. I then defined the variables required such as userId, targetAmount, targetDate and amountSaved.
+- Next, I designed the system using pseudocode by breaking the problem into functions. Each function performs a specific task: creating and storing a goal, updating savings progress, retrieving goal status and sending notifications.
+- I used basic programming operations such as create, store, retrieve, update, return, compose and send to simulate how the system would behave in a real application.
+- This approach ensures modularity, clarity and scalability of the system.
