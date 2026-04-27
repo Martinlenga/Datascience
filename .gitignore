@@ -1,7 +1,8 @@
 # Databases
-*.db
-*.sqlite
-*.sqlite3
+# Summative SQL Lab specific files
+Module2/Summarative_Lab_SQL/data.sqlite
+Module2/Summarative_Lab_SQL/im.db
+Module2/Summarative_Lab_SQL/im.db.zip
 
 # Archives / large files
 *.zip
