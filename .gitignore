@@ -7,3 +7,10 @@ Module2/Summarative_Lab_SQL/im.db.zip
 # Archives / large files
 *.zip
 *.rar
+
+Module4/Netflix Recommendation System/ratings.csv
+Module4/Netflix Recommendation System/credits.csv
+Module4/Netflix Recommendation System/movies_metadata.csv
+Module4/Market Segmentation Using Clustering Models/OnlineRetail.csv
+Module4/Spotify Project Recommendation/spotify-tracks-dataset.csv
+Module4/Recommendation Systems/book_ratings.csv
